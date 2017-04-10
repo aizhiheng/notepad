@@ -8,7 +8,7 @@ View the [article](https://molunerfinn.com/Vue+Koa/) for more details.
 
 ## Install
 
-`git clone https://github.com/Molunerfinn/vue-koa-demo.git`
+`git clone https://github.com/aizhiheng/notepad.git`
 
 `npm install` or `yarn`
 
