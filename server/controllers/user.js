@@ -68,7 +68,7 @@ const createAccount = async (ctx, next) => {
         });
         //生成激活token
         var content = { msg: email };
-        var secretOrPrivateKey = "welcome my blog";
+        var secretOrPrivateKey = "vue-koa-demo";
         var token = jwt.sign(content, secretOrPrivateKey, {
             expiresIn: 60*60*15
         });
@@ -79,7 +79,7 @@ const createAccount = async (ctx, next) => {
             to: email, // list of receivers
             subject: '记事本 激活邮件', // Subject line
             text: '记事本 激活邮件', // plain text body
-            html: '<a href="http://127.0.0.1:3000/isvalidate/token/'+token+'">猛戳激活</a>'
+            html: '<a href="http://127.0.0.1:8088/auth/isvalidate/token/'+token+'">猛戳激活</a>'
         };
         //发送邮件
         transporter.sendMail(mailOptions, (error, info) => {
@@ -95,11 +95,44 @@ const createAccount = async (ctx, next) => {
         console.log(err);
     }
 }
+//用户邮箱验证
+const isValidate = async (ctx, next) => {
+	var success;
+	var message;
+    //解析token
+    try {
+        var decoded = jwt.verify(ctx.params.token, "vue-koa-demo");
+    } catch (err) {
+        console.log(err);
+		success = false;
+        message = "链接已失效"
+    }
+	
+    //认证成功修改用户状态为1
+    try {
+        user.updateStatus({
+            isvalidate: 1,
+            email: decoded.msg
+        });
+		success = true;
+        message = "激活成功";
+    } catch (err) {
+        console.log(err);
+		success = false;
+        message = "激活失败";
+    } 
+	ctx.body = "<a href='http://127.0.0.1:8088'>"+message+"，点击返回首页"+"</a>";
+}
+
+const timeOut = async (ctx, next) =>{
+	
+}
 
 module.exports = {
   auth: (router) => {
     router.get('/user/:id', getUserInfo); // 定义url的参数是id
 	router.post('/user', postUserAuth);
 	router.post('/createAccount', createAccount);
+	router.get('/isvalidate/token/:token',isValidate);
   }
 }

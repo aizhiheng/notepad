@@ -46,9 +46,22 @@ const createUser = async (param) =>{
   return userInfo
 }
 
+//修改邮箱验证状态
+const updateStatus = async (param) =>{
+  const userInfo = await User.update({
+	  isvalidate: param.isvalidate
+  },{
+    where: {
+	  email:param.email
+    }
+  });
+  return userInfo
+}
+
 module.exports = {
   getUserById,  // 导出getUserById的方法，将会在controller里调用
   getUserByName,
   getUserByNameAndEmail,
-  createUser
+  createUser,
+  updateStatus
 }
