@@ -32,6 +32,8 @@ open browser: `localhost:8080`
 
 open browser: `localhost:8088`
 
+注册的邮箱验证部分还在完善中
+
 ## License
 
 [MIT](http://opensource.org/licenses/MIT)
