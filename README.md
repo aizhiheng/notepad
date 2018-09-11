@@ -12,7 +12,7 @@ View the [article](https://molunerfinn.com/Vue+Koa/) for more details.
 
 `npm install` or `yarn`
 
-Also you need to install MySQL & create a database named `todolist`,and execute 2 sql files `list.sql` & `user.sql`.Their are in `sql/`
+Also you need to install MySQL & create a database named `todolist`,and execute the files `todolist.sql`.Their are in `sql/`
 
 After that, You need to change the password for mysql user. -> `server/config/db.js`
 
@@ -30,9 +30,9 @@ open browser: `localhost:8080`
 
 `npm run build` and then `node app.js`
 
-open browser: `localhost:8088`
+open browser: `localhost:8889`
 
-注册的邮箱验证部分还在完善中
+注册的邮箱验证部分已实现，后续功能敬请期待！
 
 ## License
 
