@@ -14,7 +14,8 @@ View the [article](https://molunerfinn.com/Vue+Koa/) for more details.
 
 Also you need to install MySQL & create a database named `todolist`,and execute the file `todolist.sql`.Their are in `sql/`
 
-After that, You need to change the password for mysql user. -> `server/config/db.js`
+After that, You need to change the password for mysql user. -> `server/config/db.js`(注意：需要连接上数据库，
+还需要node全局安装sequelize-auto和mysql，命令行执行：yarn global add sequelize-auto mysql或者npm install -g sequelize-auto mysql)
 
 find `mysql://root:XXXX@localhost/todolist` and change the `XXXX` into your own password.
 
