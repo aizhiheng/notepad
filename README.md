@@ -12,7 +12,7 @@ View the [article](https://molunerfinn.com/Vue+Koa/) for more details.
 
 `npm install` or `yarn`
 
-Also you need to install MySQL & create a database named `todolist`,and execute the files `todolist.sql`.Their are in `sql/`
+Also you need to install MySQL & create a database named `todolist`,and execute the file `todolist.sql`.Their are in `sql/`
 
 After that, You need to change the password for mysql user. -> `server/config/db.js`
 
