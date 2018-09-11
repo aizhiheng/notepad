@@ -32,7 +32,7 @@ open browser: `localhost:8080`
 
 open browser: `localhost:8889`
 
-注册的邮箱验证部分已实现，后续功能敬请期待！
+注册的邮箱验证部分已实现，后续功能敬请期待！详细项目说明，敬请参考：https://github.com/Molunerfinn/vue-koa-demo/blob/master/Vue%2BKoa.md
 
 ## License
 
