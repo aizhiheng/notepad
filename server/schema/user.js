@@ -13,12 +13,13 @@ module.exports = function(sequelize, DataTypes) {
       allowNull: true
     },
     password: {
-      type: DataTypes.STRING(32),
+      type: DataTypes.STRING(64),
       allowNull: true
     },
     email: {
       type: DataTypes.STRING(30),
-      allowNull: true
+      allowNull: true,
+      defaultValue: 'null'
     },
     isvalidate: {
       type: DataTypes.INTEGER(1),

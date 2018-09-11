@@ -1,41 +1,42 @@
-const user = require('../models/user.js');
+const user = require('../models/user.js')
 var nodemailer = require('nodemailer');
-const jwt = require('jsonwebtoken'); // 引入koa-jwt
+const jwt = require('jsonwebtoken')
 
-const getUserInfo = async (ctx, next) => {
-  const id = ctx.params.id; // 获取url里传过来的参数里的id
-  const result = await user.getUserById(id);  // 通过await “同步”地返回查询结果
+const getUserInfo = async function (ctx) {
+  const id = ctx.params.id // 获取url里传过来的参数里的id
+  const result = await user.getUserById(id) // 通过await “同步”地返回查询结果
   ctx.body = result // 将请求的结果放到response的body里返回
 }
 
-const postUserAuth = async (ctx, next) => {
-  const data = ctx.request.body; // post过来的数据存在request.body里
-  const userInfo = await user.getUserByName(data.name);
-  if(userInfo != null){ // 如果查无此用户会返回null
-    if(userInfo.password != data.password){
+const postUserAuth = async function (ctx) {
+  const data = ctx.request.body // post过来的数据存在request.body里
+  const userInfo = await user.getUserByName(data.name)
+  if (userInfo != null) { // 如果查无此用户会返回null
+    if (userInfo.password != data.password) {
       ctx.body = {
         success: false, // success标志位是方便前端判断返回是正确与否
         info: '密码错误！'
       }
-    }else{ // 如果密码正确
+    } else {
       const userToken = {
         name: userInfo.user_name,
         id: userInfo.id
       }
-      const secret = 'vue-koa-demo'; // 指定密钥，这是之后用来判断token合法性的标志
-      const token = jwt.sign(userToken,secret); // 签发token
+      const secret = 'vue-koa-demo' // 指定密钥
+      const token = jwt.sign(userToken, secret) // 签发token
       ctx.body = {
         success: true,
-        token: token, // 返回token
+        token: token // 返回token
       }
     }
-  }else{
+  } else {
     ctx.body = {
       success: false,
       info: '用户不存在！' // 如果用户不存在返回用户不存在
     }
   }
 }
+
 //创建用户
 const createAccount = async (ctx, next) => {
     let name = ctx.request.body.name;
@@ -63,7 +64,7 @@ const createAccount = async (ctx, next) => {
             service: 'QQ',
             auth: {
                 user: '1712560167@qq.com',
-                pass: 'axkhimoxaxdvhfjj'
+                pass: 'cgzzckqudalvfchh'
             }
         });
         //生成激活token
@@ -79,7 +80,7 @@ const createAccount = async (ctx, next) => {
             to: email, // list of receivers
             subject: '记事本 激活邮件', // Subject line
             text: '记事本 激活邮件', // plain text body
-            html: '<a href="http://127.0.0.1:8088/auth/isvalidate/token/'+token+'">猛戳激活</a>'
+            html: '<a href="http://127.0.0.1:8889/auth/isvalidate/token/'+token+'">猛戳激活</a>'
         };
         //发送邮件
         transporter.sendMail(mailOptions, (error, info) => {
@@ -121,18 +122,12 @@ const isValidate = async (ctx, next) => {
 		success = false;
         message = "激活失败";
     } 
-	ctx.body = "<a href='http://127.0.0.1:8088'>"+message+"，点击返回首页"+"</a>";
+	ctx.body = "<a href='http://127.0.0.1:8889'>"+message+"，点击返回首页"+"</a>";
 }
 
-const timeOut = async (ctx, next) =>{
-	
-}
-
-module.exports = {
-  auth: (router) => {
-    router.get('/user/:id', getUserInfo); // 定义url的参数是id
-	router.post('/user', postUserAuth);
-	router.post('/createAccount', createAccount);
-	router.get('/isvalidate/token/:token',isValidate);
-  }
+module.exports =  {
+  getUserInfo,
+  postUserAuth,
+  createAccount,
+  isValidate
 }

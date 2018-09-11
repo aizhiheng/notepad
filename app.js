@@ -1,57 +1,57 @@
-const Koa = require('koa');
-const koa = require('koa-router')();
-const bodyparse = require('koa-bodyparser');
-const json = require('koa-json');
-const logger = require('koa-logger');
-const auth = require('./server/routes/auth.js'); // 引入auth
-const api = require('./server/routes/api.js');
-const jwt = require('koa-jwt');
-const path =require('path');
-const serve = require('koa-static');
-const historyApiFallback = require('koa-history-api-fallback'); // 引入依赖
-const app = new Koa();
+const Koa = require('koa')
+const json = require('koa-json')
+const logger = require('koa-logger')
+const auth = require('./server/routes/auth.js')
+const api = require('./server/routes/api.js')
+const jwt = require('koa-jwt')
+const path = require('path')
+const serve = require('koa-static')
+const historyApiFallback = require('koa2-history-api-fallback')
+const koaRouter = require('koa-router')
+const koaBodyparser = require('koa-bodyparser')
 
-app.use(bodyparse());
-app.use(json());
-app.use(logger());
+const app = new Koa()
+const router = koaRouter()
 
-//记录url及页面执行时间
-app.use(async (ctx, next) => {
-    var start = new Date();
-    await next();
-    var ms = new Date()-start;
-    console.log(`${ctx.method} ${ctx.url}`, `${ms}ms`);
-});
+app.use(koaBodyparser())
+app.use(json())
+app.use(logger())
 
-app.use((ctx, next) => {
-  return next().catch(err => {
-    if (401 == err.status) {
-      ctx.status = 401;
-      ctx.body = '401 Unauthorized - Protected resource, use Authorization header to get access\n';
+app.use(async function (ctx, next) {
+  let start = new Date()
+  await next()
+  let ms = new Date() - start
+  console.log('%s %s - %s', ctx.method, ctx.url, ms)
+})
+
+app.use(async function (ctx, next) {  //  如果JWT验证失败，返回验证失败信息
+  try {
+    await next()
+  } catch (err) {
+    if (err.status === 401) {
+      ctx.status = 401
+      ctx.body = {
+        success: false,
+        token: null,
+        info: 'Protected resource, use Authorization header to get access'
+      }
     } else {
-      throw err;
+      throw err
     }
-  });
-});
+  }
+})
 
-app.on('error', function(err, ctx){
-  console.log('server error', err);
-});
+app.on('error', function (err, ctx) {
+  console.log('server error', err)
+})
 
-koa.use('/auth', auth.routes()); // 挂载到koa-router上，同时会让所有的auth的请求路径前面加上'/auth'的请求路径。
-koa.use(jwt({secret: 'vue-koa-demo'}).unless({ path: [/^\/api/] }),api.routes()); // 所有走/api/打头的请求都需要经过jwt中间件的验证。secret密钥必须跟我们当初签发的secret一致
-app.use(koa.routes()); // 将路由规则挂载到Koa上。
+router.use('/auth', auth.routes()) // 挂载到koa-router上，同时会让所有的auth的请求路径前面加上'/auth'的请求路径。
+router.use('/api', jwt({secret: 'vue-koa-demo'}), api.routes()) // 所有走/api/打头的请求都需要经过jwt验证。
 
-app.use(historyApiFallback()); // 将这两个中间件挂载在api的路由之后
-// 静态文件serve在koa-router的其他规则之上
-app.use(serve(path.resolve('dist'))); // 将webpack打包好的项目目录作为Koa静态文件服务的目录
+app.use(router.routes()) // 将路由规则挂载到Koa上。
+app.use(historyApiFallback())
+app.use(serve(path.resolve('dist'))) // 将webpack打包好的项目目录作为Koa静态文件服务的目录
 
-app.listen(8088,() => {
-  console.log('Koa is listening in 8088');
-});
-
-module.exports = app;
-
-
-
-
+module.exports =  app.listen(8889, () => {
+  console.log(`Koa is listening in 8889`)
+})

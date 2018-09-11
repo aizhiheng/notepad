@@ -1,12 +1,12 @@
-const Sequelize = require('sequelize'); // ÒıÈësequelize
+const Sequelize = require('sequelize'); // å¼•å…¥sequelize
 
-// Ê¹ÓÃurlÁ¬½ÓµÄĞÎÊ½½øĞĞÁ¬½Ó£¬×¢Òâ½«root: ºóÃæµÄXXXX¸Ä³É×Ô¼ºÊı¾İ¿âµÄÃÜÂë
+// ä½¿ç”¨urlè¿æ¥çš„å½¢å¼è¿›è¡Œè¿æ¥ï¼Œæ³¨æ„å°†root: åé¢çš„XXXXæ”¹æˆè‡ªå·±æ•°æ®åº“çš„å¯†ç 
 const Todolist = new Sequelize('mysql://root:root@127.0.0.1/todolist',{
   define: {
-    timestamps: false // È¡ÏûSequelzie×Ô¶¯¸øÊı¾İ±í¼ÓÈëÊ±¼ä´Á£¨createdAtÒÔ¼°updatedAt£©
+    timestamps: false // å–æ¶ˆSequelzieè‡ªåŠ¨ç»™æ•°æ®è¡¨åŠ å…¥æ—¶é—´æˆ³ï¼ˆcreatedAtä»¥åŠupdatedAtï¼‰
   }
 }) 
 
 module.exports = {
-  Todolist // ½«Todolist±©Â¶³ö½Ó¿Ú·½±ãModelµ÷ÓÃ
+  Todolist // å°†Todolistæš´éœ²å‡ºæ¥å£æ–¹ä¾¿Modelè°ƒç”¨
 }

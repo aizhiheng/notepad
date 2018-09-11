@@ -1,54 +1,55 @@
-const db = require('../config/db.js'), 
-      todoModel = '../schema/list.js'; // 引入todolist的表结构
-const TodolistDb = db.Todolist; // 引入数据库
+const db = require('../config/db.js') // 引入todolist的表结构
+const todoModel = '../schema/list.js'
+const TodolistDb = db.Todolist // 引入数据库
 
-const Todolist = TodolistDb.import(todoModel); 
+const Todolist = TodolistDb.import(todoModel)
 
-const getTodolistById = async (id) => {  // 获取某个用户的全部todolist
+const getTodolistById = async function (id) {
   const todolist = await Todolist.findAll({ // 查找全部的todolist
     where: {
       user_id: id
     },
-    attributes: ['id','content','status'] // 只需返回这三个字段的结果即可
-  });
+    attributes: ['id', 'content', 'status'] // 只需返回这三个字段的结果即可
+  })
 
   return todolist // 返回数据
 }
 
-const createTodolist = async (data) => { // 给某个用户创建一条todolist
+const createTodolist = async function (data) {
   await Todolist.create({
-    user_id: data.id, // 用户的id，用来确定给哪个用户创建
+    user_id: data.id,
     content: data.content,
-    status: data.status 
+    status: data.status
   })
   return true
 }
 
-const removeTodolist = async (id,user_id) => {
-  await Todolist.destroy({
+const removeTodolist = async function (id, userId) {
+  const result = await Todolist.destroy({
     where: {
       id,
-      user_id
+      user_id: userId
     }
   })
-  return true
+  return result === 1 // 如果成功删除了记录，返回1，否则返回0
 }
 
-const updateTodolist = async (id,user_id,status) => {
-  await Todolist.update(
+const updateTodolist = async function (id, userId, status) {
+  const result = await Todolist.update(
     {
       status
-    },{
+    },
+    {
       where: {
         id,
-        user_id
+        user_id: userId
       }
     }
   )
-  return true
+  return result[0] === 1 // 返回一个数组，更新成功的条目为1否则为0。由于只更新一个条目，所以只返回一个元素
 }
 
-module.exports = {
+module.exports =  {
   getTodolistById,
   createTodolist,
   removeTodolist,
