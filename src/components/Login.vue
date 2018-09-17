@@ -30,6 +30,14 @@ export default {
         name: this.account,
         password: md5(this.password) // md5加密
       }
+      if (this.account === '') {
+        this.$message.error('请输入账号!')
+        return false
+      }
+      if (this.password === '') {
+        this.$message.error('请输入密码!')
+        return false
+      }
       this.$http.post('/auth/user', obj) // 将信息发送给后端
         .then((res) => {
           if (res.data.success) { // 如果成功
@@ -54,6 +62,10 @@ export default {
         name: this.account,
         email: this.email,
         password: md5(this.password) // md5加密
+      }
+      if (this.account === '' || this.email === '' || this.password === '') {
+        this.$message.error('请输入完整的账户信息!')
+        return false
       }
       this.$http.post('/auth/createAccount', params)
         .then(response => {

@@ -80,7 +80,7 @@ const createAccount = async (ctx, next) => {
             to: email, // list of receivers
             subject: '记事本 激活邮件', // Subject line
             text: '记事本 激活邮件', // plain text body
-            html: '<a href="http://127.0.0.1:8889/auth/isvalidate/token/'+token+'">猛戳激活</a>'
+            html: '<a href="http://47.95.249.242:8889/auth/isvalidate/token/'+token+'">猛戳激活</a>'
         };
         //发送邮件
         transporter.sendMail(mailOptions, (error, info) => {
@@ -122,7 +122,7 @@ const isValidate = async (ctx, next) => {
 		success = false;
         message = "激活失败";
     } 
-	ctx.body = "<a href='http://127.0.0.1:8889'>"+message+"，点击返回首页"+"</a>";
+	ctx.body = "<a href='http://47.95.249.242:8081'>"+message+"，点击返回首页"+"</a>";
 }
 
 module.exports =  {
