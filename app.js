@@ -1,3 +1,4 @@
+require('./env')
 const Koa = require('koa')
 const json = require('koa-json')
 const logger = require('koa-logger')
@@ -12,6 +13,7 @@ const koaBodyparser = require('koa-bodyparser')
 
 const app = new Koa()
 const router = koaRouter()
+let port = process.env.PORT
 
 app.use(koaBodyparser())
 app.use(json())
@@ -52,6 +54,6 @@ app.use(router.routes()) // 将路由规则挂载到Koa上。
 app.use(historyApiFallback())
 app.use(serve(path.resolve('dist'))) // 将webpack打包好的项目目录作为Koa静态文件服务的目录
 
-module.exports =  app.listen(8889, () => {
-  console.log(`Koa is listening in 8889`)
+module.exports =  app.listen(port, () => {
+  console.log(`Koa is listening in ${port}`)
 })
