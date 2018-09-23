@@ -5,6 +5,7 @@
   "author": "aizhiheng <1712560167@qq.com>",
   "private": true,
   "dependencies": {
+    "dotenv": "^6.0.0",
     "koa": "^2.2.0",
     "koa-bodyparser": "^4.2.0",
     "koa-json": "^2.0.2",

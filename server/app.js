@@ -1,3 +1,4 @@
+require('./env')
 const Koa = require('koa')
 const json = require('koa-json')
 const logger = require('koa-logger')
@@ -9,6 +10,7 @@ const koaBodyparser = require('koa-bodyparser')
 
 const app = new Koa()
 const router = koaRouter()
+let port = process.env.PORT
 
 app.use(koaBodyparser())
 app.use(json())
@@ -47,6 +49,6 @@ router.use('/api', jwt({secret: 'vue-koa-demo'}), api.routes()) // 所有走/api
 
 app.use(router.routes()) // 将路由规则挂载到Koa上。
 
-module.exports =  app.listen(8889, () => {
-  console.log(`Koa is listening in 8889`)
+module.exports =  app.listen(port, () => {
+  console.log(`Koa is listening in ${port}`)
 })
